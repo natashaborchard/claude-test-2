@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Team Media Library (Snapshot)</title>
+<style>
+:root{--bg:#f7f7f5;--card:#fff;--tx:#1d1d1b;--mu:#6b6b66;--bd:#e2e2dc;--ac:#2f5bea;--acx:#fff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#161615;--card:#212120;--tx:#ecece8;--mu:#9a9a94;--bd:#33332f;--ac:#7b9bff;--acx:#10101a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#161615;--card:#212120;--tx:#ecece8;--mu:#9a9a94;--bd:#33332f;--ac:#7b9bff;--acx:#10101a;color-scheme:dark}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:960px;margin:0 auto;padding:20px 16px 40px}
+h1{font-size:22px;margin:0 0 4px}.sub{color:var(--mu);font-size:13px;margin-bottom:14px}
+input,select{font:inherit;color:inherit;background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:9px 11px;width:100%}
+button{font:inherit;cursor:pointer;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:99px;padding:5px 12px;font-size:13px}
+button.on{background:var(--ac);color:var(--acx);border-color:var(--ac)}
+.bar{display:flex;gap:8px;flex-wrap:wrap}.bar input{flex:1 1 240px}.bar select{width:auto}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0;align-items:center}.meta{color:var(--mu);font-size:12px}
+.crumb{border:0;background:none;color:var(--ac);padding:2px 4px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:6px}
+.card h3{margin:0;font-size:16px;overflow-wrap:anywhere}.card a{color:var(--ac);text-decoration:none}
+.type{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--mu)}
+mark{background:rgba(255,200,0,.35);color:inherit;border-radius:3px}
+.empty{text-align:center;color:var(--mu);padding:40px 0;grid-column:1/-1}
+</style></head><body><main>
+<h1>🗂️ Team Media Library</h1><div class="sub" id="stamp"></div>
+<div class="bar"><input id="q" type="search" placeholder="Search by keyword, title or description…">
+<select id="tf"><option value="">All types</option><option>Image</option><option>Video</option><option>Document</option><option>Audio</option><option>Other</option></select></div>
+<div class="row" id="crumbs"></div><div class="row" id="folders"></div><div class="row" id="tagbar"></div>
+<div class="meta" id="count"></div><div class="grid" id="grid"></div>
+</main>
+<script>
+const DATA={"generated": 1793672576866, "items": [{"addedAt": 1793584000000, "by": "", "desc": "Imported from the Google Drive folder “Claude Test”.", "folder": "", "keywords": ["wolgemuth gelinas", "westchester country club", "2026"], "tags": [], "title": "Wolgemuth Gelinas Westchester Country Club 2026", "type": "Video", "url": "https://drive.google.com/file/d/13NhFXO-GucxnKyQWhtkbhanumzobH8ev/view?usp=drivesdk", "id": "drive-13NhFXO-Guc"}, {"addedAt": 1793580000000, "by": "", "desc": "Imported from the Google Drive folder “Claude Test”.", "keywords": ["weiland", "wedding", "private residence", "2026", "tnm", "pink pony club"], "tags": [], "title": "Weiland Wedding Private Residence 2026 TNM Pink Pony Club", "type": "Video", "url": "https://drive.google.com/file/d/1URIdVi2ort-JClj5wErHxjMQu2GJPc_D/view?usp=drivesdk", "id": "drive-1URIdVi2ort"}, {"addedAt": 1793580002000, "by": "", "desc": "Imported from the Google Drive folder “Claude Test”.", "keywords": ["robinson horowitz", "blue hill", "2026", "sax"], "tags": [], "title": "Robinson Horowitz Blue Hill 2026 Sax Party", "type": "Video", "url": "https://drive.google.com/file/d/1flDXVMXv3YMzJr90vAfBOe8o9eo6ur37/view?usp=drivesdk", "id": "drive-1flDXVMXv3Y"}, {"addedAt": 1793581000000, "by": "", "desc": "Imported from the Google Drive folder “Claude Test”.", "keywords": ["fournier duggan", "sweet caroline"], "tags": [], "title": "Fournier Duggan Sweet Caroline", "type": "Video", "url": "https://drive.google.com/file/d/1r9LcEG4HVXaG0ai7AXwvKb56FTuZiPiV/view?usp=drivesdk", "id": "drive-1r9LcEG4HVX"}, {"addedAt": 1793580001000, "by": "", "desc": "Imported from the Google Drive folder “Claude Test”.", "folder": "drive-1NgyU5dFfzWU", "keywords": ["han seo", "cedar lakes", "2026", "tnm", "i wanna be where you are", "crowd"], "tags": [], "title": "Han Seo Cedar Lakes 2026 TNM I Wanna Be Where You Are Crowd", "type": "Video", "url": "https://drive.google.com/file/d/1vI13TshtEkRJjwYI-W2mMCAWiRXDdBzS/view?usp=drivesdk", "id": "drive-1vI13TshtEk"}], "folders": [{"driveId": "1NgyU5dFfzWUNz14UabiYLSRYhWQxfZp2", "name": "Sub Folder Test", "parent": "", "id": "drive-1NgyU5dFfzWU"}]};
+const items=DATA.items,folders=DATA.folders;let tag="",cur="";
+const $=id=>document.getElementById(id);
+$("stamp").textContent="Snapshot from "+new Date(DATA.generated).toLocaleDateString()+" · read-only";
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const safeUrl=u=>/^https?:\/\//i.test(u)?u:"#";
+function path(id){const p=[];let f=folders.find(x=>x.id===id),n=0;while(f&&n++<20){p.unshift(f);f=folders.find(x=>x.id===f.parent)}return p}
+function hl(t,ts){let h=esc(t);ts.forEach(x=>{h=h.replace(new RegExp("("+x.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+")","gi"),"<mark>$1</mark>")});return h}
+function render(){
+  const ts=$("q").value.toLowerCase().split(/\s+/).filter(Boolean),tf=$("tf").value,s=!!(ts.length||tag||tf);
+  const hits=items.filter(i=>(s||(i.folder||"")===cur)&&(!tf||i.type===tf)&&(!tag||(i.tags||[]).includes(tag))&&ts.every(t=>[i.title,i.desc,i.type,(i.keywords||[]).join(" "),(i.tags||[]).join(" ")].join(" ").toLowerCase().includes(t))).sort((a,b)=>(b.addedAt||0)-(a.addedAt||0));
+  $("crumbs").innerHTML=s||(!cur&&!folders.length)?"":`<button class="crumb" data-f="">All media</button>`+path(cur).map(f=>` / <button class="crumb" data-f="${esc(f.id)}">${esc(f.name)}</button>`).join("");
+  $("folders").innerHTML=s?"":folders.filter(f=>(f.parent||"")===cur).sort((a,b)=>a.name.localeCompare(b.name)).map(f=>`<button data-f="${esc(f.id)}">📁 ${esc(f.name)} ${items.filter(i=>(i.folder||"")===f.id).length}</button>`).join("");
+  const freq={};items.filter(i=>!tf||i.type===tf).forEach(i=>(i.tags||[]).forEach(t=>freq[t]=(freq[t]||0)+1));
+  $("tagbar").innerHTML=Object.keys(freq).length?`<span class="meta">Tags:</span>`+Object.entries(freq).sort((a,b)=>b[1]-a[1]).map(([t,n])=>`<button class="${t===tag?"on":""}" data-t="${esc(t)}">${esc(t)} ${n}</button>`).join("")+(tag?`<button data-t="">Clear ✕</button>`:""):"";
+  $("count").textContent=`${hits.length} of ${items.length} items`;
+  $("grid").innerHTML=hits.length?hits.map(i=>`<div class="card"><span class="type">${esc(i.type)}</span><h3><a href="${esc(safeUrl(i.url))}" target="_blank" rel="noopener noreferrer">${hl(i.title,ts)}</a></h3>
+  ${i.desc?`<div class="meta">${hl(i.desc,ts)}</div>`:""}
+  <div class="row" style="margin:0">${(i.tags||[]).map(t=>`<button data-t="${esc(t)}">${esc(t)}</button>`).join("")}</div>
+  ${s&&i.folder?`<div class="meta">📁 ${esc(path(i.folder).map(f=>f.name).join(" / "))}</div>`:""}</div>`).join(""):`<div class="empty">${s?"No matches. Try fewer or different keywords.":"This folder has no items yet."}</div>`;
+}
+document.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
+  if(b.dataset.f!==undefined){cur=b.dataset.f;render()}
+  else if(b.dataset.t!==undefined){tag=b.dataset.t===tag?"":b.dataset.t;render()}});
+$("q").oninput=render;$("tf").onchange=render;render();
+</script></body></html>
