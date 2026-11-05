@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Team Media Library</title>
+<style>
+:root{--bg:#f7f7f5;--card:#fff;--tx:#1d1d1b;--mu:#6b6b66;--bd:#e2e2dc;--ac:#2f5bea;--acx:#fff;--chip:#eef1fd;--chipx:#2f5bea;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#161615;--card:#212120;--tx:#ecece8;--mu:#9a9a94;--bd:#33332f;--ac:#7b9bff;--acx:#10101a;--chip:#252a42;--chipx:#a9bcff;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#161615;--card:#212120;--tx:#ecece8;--mu:#9a9a94;--bd:#33332f;--ac:#7b9bff;--acx:#10101a;--chip:#252a42;--chipx:#a9bcff;color-scheme:dark}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:960px;margin:0 auto;padding:20px 16px 40px}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+h1{font-size:22px;margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+input,select,textarea{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:9px 11px;width:100%}
+button{background:var(--ac);color:var(--acx);border:0;border-radius:8px;padding:9px 14px;cursor:pointer}
+button.ghost{background:transparent;color:var(--mu);border:1px solid var(--bd)}
+.bar{display:flex;gap:8px;flex-wrap:wrap}.bar input{flex:1 1 240px}.bar select{width:auto}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}
+.chip{background:var(--chip);color:var(--chipx);border-radius:99px;padding:3px 10px;font-size:13px;cursor:pointer;border:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:6px}
+.card h3{margin:0;font-size:16px;overflow-wrap:anywhere}.card a{color:var(--ac);text-decoration:none}
+.meta{color:var(--mu);font-size:12px}.card p{margin:0;color:var(--mu);font-size:14px}
+.type{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--mu)}
+mark{background:rgba(255,200,0,.35);color:inherit;border-radius:3px}
+form{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;margin-bottom:14px;display:none;gap:8px;grid-template-columns:1fr 1fr}
+form.open{display:grid}form .full{grid-column:1/-1}
+@media(max-width:560px){form{grid-template-columns:1fr}}
+.empty{text-align:center;color:var(--mu);padding:40px 0}
+.tags{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tag{background:transparent;color:var(--tx);border:1px solid var(--bd);border-radius:99px;padding:3px 10px;font-size:13px;cursor:pointer}
+.tag.on{background:var(--ac);color:var(--acx);border-color:var(--ac)}
+#tagbar{flex-direction:column;align-items:stretch;gap:8px}#clearTag{align-self:flex-start}.tgroup{display:flex;gap:6px;flex-wrap:wrap;align-items:center}.gh{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--mu);min-width:64px}
+.gin{width:150px;padding:3px 10px;border-radius:99px;font-size:13px}
+.dd{width:100%}.ddh{background:var(--card);color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:7px 12px;display:flex;align-items:center;gap:8px;width:100%;max-width:360px;justify-content:flex-start;text-align:left}.ddh small{color:var(--mu)}.car{margin-left:auto;color:var(--mu)}.dd .tgroup{padding:8px 4px 4px}
+.tag small{opacity:.7}.tag.add{border-style:dashed;color:var(--mu)}
+.tag span{margin-left:4px;opacity:.7}
+.taginput{width:150px;padding:3px 10px;border-radius:99px;font-size:13px}
+.fin{width:180px;padding:6px 12px;border-radius:99px;font-size:13px}
+.crumbs{margin:12px 0 4px;color:var(--mu)}.crumb{background:none;color:var(--ac);padding:2px 4px;border-radius:6px}
+.folders{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.fold{background:var(--card);color:var(--tx);border:1px solid var(--bd);padding:8px 12px}
+.fold.add{border-style:dashed;color:var(--mu);background:transparent}.fold small{color:var(--mu)}.fold span{margin-left:6px;opacity:.6}
+select.mv{font-size:12px;padding:3px 6px;width:auto;align-self:flex-start}
+</style></head><body><main>
+<header><h1>🗂️ Team Media Library</h1><button id="addBtn">+ Add media</button></header>
+<form id="f">
+<input class="full" id="title" placeholder="Title (e.g. Q3 launch hero banner)" required maxlength="120">
+<input class="full" id="url" type="url" placeholder="Link to the file (Drive, Dropbox, SharePoint, web…)" required>
+<select id="type"><option>Image</option><option>Video</option><option>Document</option><option>Audio</option><option>Other</option></select>
+<input id="kw" placeholder="Keywords, comma-separated">
+<textarea class="full" id="desc" rows="2" placeholder="Short description (optional)" maxlength="400"></textarea>
+<div class="full bar"><button type="submit">Save</button><button type="button" class="ghost" id="cancel">Cancel</button><span class="meta" id="msg"></span></div>
+</form>
+<div class="bar"><input id="q" type="search" placeholder="Search by keyword, title or description…" autofocus>
+<select id="tf"><option value="">All types</option><option>Image</option><option>Video</option><option>Document</option><option>Audio</option><option>Other</option></select></div>
+<div class="crumbs" id="crumbs"></div><div class="folders" id="folders"></div>
+<div class="chips" id="tagbar"></div>
+<div class="meta" id="count"></div><datalist id="tagdl"></datalist>
+<div class="grid" id="grid"></div>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+let items=[],tagdefs=[],taggroup={},groupdefs=[],addingG=null,openG=new Set(),tcoll=null,coll=null,me=null,user=null,tag="",adding=null,folders=[],fcoll=null,cur="",addingF=false;
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const safeUrl=u=>/^https?:\/\//i.test(u)?u:"#";
+function terms(){return $("q").value.toLowerCase().split(/\s+/).filter(Boolean)}
+function hl(text,ts){let h=esc(text);ts.forEach(t=>{const r=new RegExp("("+t.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+")","gi");h=h.replace(r,"<mark>$1</mark>")});return h}
+function render(){
+  const ts=terms(),tf=$("tf").value;const canEdit=!!(user&&user.canEdit&&user.canEdit());
+  const searching=!!(ts.length||tag||tf);const hits=items.filter(i=>(searching||(i.folder||"")===cur)&&(!tf||i.type===tf)&&(!tag||(i.tags||[]).includes(tag))&&ts.every(t=>[i.title,i.desc,i.type,(i.keywords||[]).join(" "),(i.tags||[]).join(" ")].join(" ").toLowerCase().includes(t)))
+    .sort((a,b)=>(b.addedAt||0)-(a.addedAt||0));
+  renderFolders(searching,canEdit);const base=items.filter(i=>!tf||i.type===tf);const freq={};base.forEach(i=>(i.tags||[]).forEach(t=>freq[t]=(freq[t]||0)+1));tagdefs.forEach(t=>{if(!(t in freq))freq[t]=0});
+  const tb=([t,n])=>`<button class="tag${t===tag?" on":""}" data-tag="${esc(t)}">${esc(t)} <small>${n}</small></button>`;
+  const ents=Object.entries(freq).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0]));
+  const gs=[...groupdefs,...[...new Set(ents.map(([t])=>taggroup[t]).filter(Boolean))].filter(g=>!groupdefs.includes(g)).sort()];
+  const rest=ents.filter(([t])=>!taggroup[t]);
+  const dd=(g,mine,add)=>{const open=openG.has(g)||mine.some(([t])=>t===tag)||addingG===g;return `<div class="dd"><button class="ddh" data-tg="${esc(g)}" aria-expanded="${open}">${esc(g)} <small>${mine.length}</small><span class="car">${open?"▾":"▸"}</span></button>${open?`<div class="tgroup">${mine.map(tb).join("")}${add&&canEdit?(addingG===g?`<input class="gin" id="gin" data-g="${esc(g)}" placeholder="Tag, then Enter" maxlength="40">`:`<button class="tag add" data-addg="${esc(g)}">+ tag</button>`):(mine.length?"":`<span class="meta">No tags yet</span>`)}</div>`:""}</div>`};
+  $("tagbar").innerHTML=(ents.length||gs.length?"":`<span class="meta">${canEdit?"No tags yet. Use “+ tag” on any item.":"No tags yet."}</span>`)+gs.map(g=>dd(g,ents.filter(([t])=>taggroup[t]===g),true)).join("")+(rest.length?(gs.length?dd("Other",rest,false):`<div class="tgroup"><span class="meta">Tags:</span>${rest.map(tb).join("")}</div>`):"")+(tag?`<button class="ghost chip" id="clearTag">Clear ✕</button>`:"");
+  $("tagdl").innerHTML=[...new Set([...tagdefs,...items.flatMap(x=>x.tags||[])])].sort().map(t=>`<option value="${esc(t)}">`).join("");
+  $("count").textContent=items.length?`${hits.length} of ${items.length} items`:"";
+  $("grid").innerHTML=hits.length?hits.map(i=>`<div class="card"><span class="type">${esc(i.type)}</span>
+    <h3><a href="${esc(safeUrl(i.url))}" target="_blank" rel="noopener noreferrer">${hl(i.title,ts)}</a></h3>
+    ${i.desc?`<p>${hl(i.desc,ts)}</p>`:""}
+    <div class="tags">${(i.tags||[]).map(t=>`<button class="tag${t===tag?" on":""}" data-tag="${esc(t)}">${esc(t)}${canEdit?`<span data-rm="${esc(i.id)}" data-rmt="${esc(t)}" title="Remove tag">×</span>`:""}</button>`).join("")}${canEdit?(adding===i.id?`<input class="taginput" list="tagdl" data-ti="${esc(i.id)}" placeholder="Tag, then Enter" maxlength="40">`:`<button class="tag add" data-addtag="${esc(i.id)}">+ tag</button>`):""}</div>
+    <div>${(i.keywords||[]).map(k=>`<button class="chip" data-k="${esc(k)}">${hl(k,ts)}</button>`).join(" ")}</div>
+    ${canEdit?`<select class="mv" data-mv="${esc(i.id)}">${folderOpts(i.folder||"")}</select>`:""}<div class="meta">${searching&&i.folder?`📁 ${esc(path(i.folder).map(f=>f.name).join(" / "))} · `:""}${i.addedAt?new Date(i.addedAt).toLocaleDateString():""}
+    ${(i.by&&i.by===me)||(user&&user.canEdit&&user.canEdit())?` · <a href="#" data-del="${esc(i.id)}">delete</a>`:""}</div></div>`).join("")
+    :`<div class="empty" style="grid-column:1/-1">${items.length?(searching?"No matches. Try fewer or different keywords.":"This folder has no items yet."):"No media yet. Click “Add media” to get started."}</div>`;
+}
+document.addEventListener("click",async e=>{
+  const k=e.target.dataset&&e.target.dataset.k;
+  if(k){$("q").value=k;render();window.scrollTo(0,0)}
+  const df=e.target.dataset&&e.target.dataset.delf;
+  if(df){const f=folders.find(x=>x.id===df);if(f&&fcoll){try{
+    for(const i of items.filter(x=>(x.folder||"")===df))await coll.doc(i.id).update({folder:f.parent||""});
+    for(const s of folders.filter(x=>(x.parent||"")===df))await fcoll.doc(s.id).update({parent:f.parent||""});
+    await fcoll.doc(df).delete()}catch(err){}}return}
+  const nf=e.target.closest&&e.target.closest("[data-f]");
+  if(nf){cur=nf.dataset.f;addingF=false;render();return}
+  if(e.target.id==="newF"){addingF=true;render();const fi=$("fin");if(fi)fi.focus();return}
+  const rm=e.target.dataset&&e.target.dataset.rm;
+  if(rm){const it=items.find(x=>x.id===rm),t=e.target.dataset.rmt;if(it){try{await coll.doc(rm).update({tags:(it.tags||[]).filter(x=>x!==t)})}catch(err){}}return}
+  const tgl=e.target.closest&&e.target.closest("[data-tg]");
+  if(tgl){const g=tgl.dataset.tg;if(openG.has(g))openG.delete(g);else openG.add(g);render();return}
+  const ag=e.target.dataset&&e.target.dataset.addg;
+  if(ag){addingG=ag;render();const gi=$("gin");if(gi)gi.focus();return}
+  const at=e.target.dataset&&e.target.dataset.addtag;
+  if(at){adding=at;render();const ti=document.querySelector(".taginput");if(ti)ti.focus();return}
+  const tg=e.target.closest&&e.target.closest("[data-tag]");
+  if(tg){tag=tg.dataset.tag===tag?"":tg.dataset.tag;render();return}
+  if(e.target.id==="clearTag"){tag="";render();return}
+  const d=e.target.dataset&&e.target.dataset.del;
+  if(d){e.preventDefault();if(confirm("Delete this item?")){try{await coll.doc(d).delete()}catch(err){alert("Couldn’t delete.")}}}
+});
+function path(id){const p=[];let f=folders.find(x=>x.id===id),n=0;while(f&&n++<20){p.unshift(f);f=folders.find(x=>x.id===f.parent)}return p}
+function folderOpts(sel){return `<option value="">📁 Top level</option>`+folders.map(f=>({f,p:path(f.id).map(x=>x.name).join(" / ")})).sort((a,b)=>a.p.localeCompare(b.p)).map(({f,p})=>`<option value="${esc(f.id)}"${f.id===sel?" selected":""}>${esc(p)}</option>`).join("")}
+function renderFolders(searching,canEdit){
+  if(cur&&!folders.find(f=>f.id===cur))cur="";
+  $("crumbs").innerHTML=searching||(!cur&&!folders.length)?"":`<button class="crumb" data-f="">All media</button>`+path(cur).map(f=>` / <button class="crumb" data-f="${esc(f.id)}">${esc(f.name)}</button>`).join("");
+  const subs=searching?[]:folders.filter(f=>(f.parent||"")===cur).sort((a,b)=>a.name.localeCompare(b.name));
+  $("folders").innerHTML=subs.map(f=>`<button class="fold" data-f="${esc(f.id)}">📁 ${esc(f.name)} <small>${items.filter(i=>(i.folder||"")===f.id).length}</small>${canEdit?`<span data-delf="${esc(f.id)}" title="Delete folder (items move up one level)">×</span>`:""}</button>`).join("")+(canEdit&&!searching?(addingF?`<input class="fin" id="fin" placeholder="Folder name, Enter" maxlength="60">`:`<button class="fold add" id="newF">+ folder</button>`):"");
+}
+document.addEventListener("change",e=>{const m=e.target.dataset&&e.target.dataset.mv;if(m&&coll)coll.doc(m).update({folder:e.target.value}).catch(()=>{})});
+document.addEventListener("keydown",async e=>{
+  if(e.target.id!=="fin")return;
+  if(e.key==="Escape"){addingF=false;render();return}
+  if(e.key!=="Enter")return;e.preventDefault();
+  const n=e.target.value.trim();addingF=false;
+  if(n&&fcoll){try{await fcoll.doc("f"+Date.now().toString(36)+Math.random().toString(36).slice(2,5)).set({name:n,parent:cur})}catch(err){}}
+  render();
+});
+document.addEventListener("keydown",async e=>{
+  if(e.target.id!=="gin")return;
+  if(e.key==="Escape"){addingG=null;render();return}
+  if(e.key!=="Enter")return;e.preventDefault();
+  const n=e.target.value.trim(),g=e.target.dataset.g;addingG=null;
+  if(n&&tcoll&&!tagdefs.some(x=>x.toLowerCase()===n.toLowerCase())){try{await tcoll.doc("t"+Date.now().toString(36)+Math.random().toString(36).slice(2,5)).set({name:n,group:g})}catch(err){}}
+  render();
+});
+$("q").oninput=render;$("tf").onchange=render;
+document.addEventListener("keydown",async e=>{
+  const el=e.target;if(!el.classList||!el.classList.contains("taginput"))return;
+  if(e.key==="Escape"){adding=null;render();return}
+  if(e.key!=="Enter")return;
+  e.preventDefault();
+  const id=el.dataset.ti,t=el.value.trim(),it=items.find(x=>x.id===id);
+  adding=null;
+  if(t&&it){const cur=it.tags||[];const known=[...tagdefs,...items.flatMap(x=>x.tags||[])].find(x=>x.toLowerCase()===t.toLowerCase());const tt=known||t;
+    if(!cur.some(x=>x.toLowerCase()===tt.toLowerCase())){try{await coll.doc(id).update({tags:[...cur,tt]})}catch(err){}}}
+  render();
+});
+$("addBtn").onclick=()=>{$("f").classList.toggle("open");$("title").focus()};
+$("cancel").onclick=()=>$("f").classList.remove("open");
+$("f").onsubmit=async e=>{
+  e.preventDefault();
+  if(!coll){$("msg").textContent="Sign in to add items.";return}
+  const kws=[...new Set($("kw").value.split(",").map(s=>s.trim().toLowerCase()).filter(Boolean))];
+  const id="m"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+  try{
+    await coll.doc(id).set({title:$("title").value.trim(),url:$("url").value.trim(),type:$("type").value,keywords:kws,desc:$("desc").value.trim(),by:me||"",addedAt:Date.now(),folder:cur});
+    $("f").reset();$("f").classList.remove("open");$("msg").textContent="";
+  }catch(err){$("msg").textContent="Couldn’t save ("+(err.code||"error")+")."}
+};
+render();
+(async()=>{
+  try{
+    user=await claude.use("user");
+    const db=await claude.use("db");
+    if(!db){$("count").textContent="Sign in to view the shared library.";return}
+    try{me=await user.id()}catch(e){}
+    coll=db.collection("media");fcoll=db.collection("folders");tcoll=db.collection("tags");db.collection("taggroups").onSnapshot(s=>{groupdefs=s.docs.map(d=>d.data()).filter(x=>x.name).sort((a,b)=>(a.order||0)-(b.order||0)).map(x=>x.name);render()});tcoll.onSnapshot(s=>{tagdefs=s.docs.map(d=>d.data().name).filter(Boolean);taggroup={};s.docs.forEach(d=>{const x=d.data();if(x.name&&x.group)taggroup[x.name]=x.group});render()});fcoll.onSnapshot(s=>{folders=s.docs.map(d=>({id:d.id,...d.data()}));render()});
+    coll.onSnapshot(s=>{items=s.docs.map(d=>({id:d.id,...d.data()}));render()},e=>{$("count").textContent="Couldn’t load the library."});
+  }catch(e){}
+})();
+</script>
+</body></html>
